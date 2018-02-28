@@ -35,6 +35,9 @@ GLuint bufferCirculoID;
 
 Shader *shader;
 
+float escalaCirculoX = 0.4f;
+float escalaCirculoY = 0.5f;
+
 //Aqui esta bien para cambiar los valores de las variables de mi programa
 void actualizar() {
 
@@ -50,6 +53,9 @@ void dibujar() {
 
 	glBindVertexArray(vertexArrayCuadradoID);
 	glDrawArrays(GL_POLYGON, 0, cuadrado.size());
+
+	glBindVertexArray(vertexArrayCirculoID);
+	glDrawArrays(GL_POLYGON, 0, circulo.size());
 
 	//Soltar el vertex array
 	glBindVertexArray(0);
@@ -80,9 +86,10 @@ void inicializarCuadrado() {
 }
 
 void inicializarCirculo() {
-	for (int i = 0; i < 360; i+=0.1) {
-		Vertice v1 = { vec3(i, -i, 0.0f), vec4(1.0f, 1.0f, 1.0f, 1.0f) };
-		circulo.push_back(v1);
+	Vertice v1[360];
+	for (int i = 0; i < 360; i++) {
+		v1[i] = { vec3(escalaCirculoX * cos(i), escalaCirculoY * sin(i), 0.0f), vec4(1.0f, 0.0f, 0.0f, 1.0f) };
+		circulo.push_back(v1[i]);
 	}
 }
 
@@ -126,6 +133,7 @@ int main()
 	const GLubyte *version = glGetString(GL_VERSION);
 	cout << "Version de OpenGL: " << version << endl;
 	
+	inicializarCuadrado();
 	inicializarCirculo();
 
 	//Crear instancia del shader
